@@ -1,13 +1,21 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(SoundHandler))]
 public class Player : MonoBehaviour
 {
+    private SoundHandler Sounds;
     private CharacterController character;
     private Vector3 direction;
 
     public float jumpForce = 8f;
     public float gravity = 9.81f * 2f;
+
+    private void Start()
+    {
+        Sounds.GetComponent<SoundHandler>();
+    }
 
     private void Awake()
     {
@@ -28,6 +36,7 @@ public class Player : MonoBehaviour
             direction = Vector3.down;
 
             if (Input.GetButton("Jump")) {
+                Sounds.PlayJumpSound();
                 direction = Vector3.up * jumpForce;
             }
         }
