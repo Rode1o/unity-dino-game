@@ -5,5 +5,3 @@
 - **Difficulty**: Beginner
 - **Topics**: Side Scrolling, Infinite Generation, Hiscores
 - **Version**: Unity 2021.3 (LTS)
-- [**Download**](https://github.com/zigurous/unity-dino-game-tutorial/archive/refs/heads/main.zip)
-- [**Watch Video**](https://youtu.be/UPvW8kYqxZk)
