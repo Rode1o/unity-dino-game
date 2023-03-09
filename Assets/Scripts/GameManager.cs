@@ -20,7 +20,13 @@ public class GameManager : MonoBehaviour
     private Spawner spawner;
 
     private float score;
-
+    
+    public AudioClip audioClip;
+    
+    private int lastScoreMultiple = -1;
+    private int currentScoreMultiple;
+    
+    
     private void Awake()
     {
         if (Instance != null) {
@@ -83,6 +89,12 @@ public class GameManager : MonoBehaviour
         gameSpeed += gameSpeedIncrease * Time.deltaTime;
         score += gameSpeed * Time.deltaTime;
         scoreText.text = Mathf.FloorToInt(score).ToString("D5");
+        currentScoreMultiple = Mathf.FloorToInt(score / 100);
+        if (currentScoreMultiple != lastScoreMultiple && currentScoreMultiple != 0)
+        {
+            lastScoreMultiple = currentScoreMultiple;
+            GetComponent<AudioSource>().PlayOneShot(audioClip);
+        }
     }
 
     private void UpdateHiscore()
@@ -97,5 +109,5 @@ public class GameManager : MonoBehaviour
 
         hiscoreText.text = Mathf.FloorToInt(hiscore).ToString("D5");
     }
-
+    
 }

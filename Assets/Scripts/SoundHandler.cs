@@ -1,37 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class SoundHandler : MonoBehaviour
 {
-    private AudioSource[] Sounds;
-
-    private AudioSource JumpSound; 
-    private AudioSource DieSound;
-    private AudioSource PointSound;
+    public AudioClip sound1;
+    public AudioClip sound2;
+    private AudioSource audioSource;
+    
     // Start is called before the first frame update
     void Start()
     {
-        Sounds = GetComponents<AudioSource>();
-        JumpSound = Sounds[0];
-        DieSound = Sounds[1];
-        PointSound = Sounds[2];
+        audioSource = GetComponent<AudioSource>();
     }
 
     public void PlayJumpSound()
     {
-      JumpSound.Play();   
+      audioSource.PlayOneShot(sound1);  
     }
 
     public void PlayDieSound()
     {
-        DieSound.Play();
+        audioSource.PlayOneShot(sound2);  
     }
-
-    public void PlayPointSound()
-    {
-        PointSound.Play();
-    }
+    
 
 
 }

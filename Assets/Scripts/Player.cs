@@ -2,19 +2,18 @@ using System;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
-[RequireComponent(typeof(SoundHandler))]
 public class Player : MonoBehaviour
 {
-    private SoundHandler Sounds;
     private CharacterController character;
     private Vector3 direction;
+    public SoundHandler soundHandler;
 
     public float jumpForce = 8f;
     public float gravity = 9.81f * 2f;
+    
 
     private void Start()
     {
-        Sounds.GetComponent<SoundHandler>();
     }
 
     private void Awake()
@@ -35,8 +34,9 @@ public class Player : MonoBehaviour
         {
             direction = Vector3.down;
 
-            if (Input.GetButton("Jump")) {
-                Sounds.PlayJumpSound();
+            if (Input.GetButton("Jump"))
+            {
+                soundHandler.PlayJumpSound();
                 direction = Vector3.up * jumpForce;
             }
         }
@@ -47,8 +47,15 @@ public class Player : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Obstacle")) {
-            FindObjectOfType<GameManager>().GameOver();
+            soundHandler.PlayDieSound();
+            Invoke("Find",0.2f);
+            
         }
+    }
+
+    private void Find()
+    {
+        FindObjectOfType<GameManager>().GameOver();
     }
 
 }
