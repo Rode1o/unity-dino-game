@@ -15,6 +15,10 @@ public class Spawner : MonoBehaviour
     public float minSpawnRate = 1f;
     public float maxSpawnRate = 2f;
 
+    [Header("Spawn Height Settings")]
+    public float minHeight = -5f; // Altura mínima de spawn
+    public float maxHeight = 5f;  // Altura máxima de spawn
+
     private void OnEnable()
     {
         Invoke(nameof(Spawn), Random.Range(minSpawnRate, maxSpawnRate));
@@ -33,8 +37,11 @@ public class Spawner : MonoBehaviour
         {
             if (spawnChance < obj.spawnChance)
             {
+                Vector3 randomPosition = transform.position;
+                randomPosition.y = Random.Range(minHeight, maxHeight);
+
                 GameObject obstacle = Instantiate(obj.prefab);
-                obstacle.transform.position += transform.position;
+                obstacle.transform.position += randomPosition;
                 break;
             }
 

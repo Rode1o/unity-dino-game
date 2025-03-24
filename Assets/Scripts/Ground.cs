@@ -1,19 +1,22 @@
 using UnityEngine;
 
 [RequireComponent(typeof(MeshRenderer))]
-public class Ground : MonoBehaviour
+public class Ground : ScrollingObject
 {
-    private MeshRenderer meshRenderer;
+    private MeshRenderer GroundMeshRenderer;
 
-    private void Awake()
+    protected override void Awake()
     {
-        meshRenderer = GetComponent<MeshRenderer>();
+        base.Awake();
+        GroundMeshRenderer = GetComponent<MeshRenderer>();
     }
 
-    private void Update()
+    protected override void Update()
     {
-        float speed = GameManager.Instance.gameSpeed / transform.localScale.x;
-        meshRenderer.material.mainTextureOffset += Vector2.right * speed * Time.deltaTime;
+        base.Update();
+        // Manejo específico para el cielo si es necesario
+        float speed = GameManager.Instance.gameSpeed / transform.localScale.x ;
+        GroundMeshRenderer.material.mainTextureOffset += Vector2.right * speed * Time.deltaTime;
     }
 
 }
