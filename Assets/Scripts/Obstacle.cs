@@ -1,21 +1,30 @@
 using UnityEngine;
 
-public class Obstacle : MonoBehaviour
+public class GameEntity : MonoBehaviour
 {
-    private float leftEdge;
+    protected float leftEdge;
 
-    private void Start()
+    protected virtual void Start()
     {
         leftEdge = Camera.main.ScreenToWorldPoint(Vector3.zero).x - 2f;
     }
 
-    private void Update()
+    protected virtual void Update() 
     {
         transform.position += Vector3.left * GameManager.Instance.gameSpeed * Time.deltaTime;
 
-        if (transform.position.x < leftEdge) {
+        if (transform.position.x < leftEdge)
+        {
             Destroy(gameObject);
         }
     }
+}
 
+public class Obstacle : GameEntity
+{
+}
+
+public class Collectable : GameEntity
+{
+    
 }

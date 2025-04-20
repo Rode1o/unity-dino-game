@@ -1,6 +1,12 @@
 using System;
 using UnityEngine;
 
+public enum GameEntityType
+{
+    Obstacle,
+    Collectable
+}
+
 [RequireComponent(typeof(CharacterController))]
 public class Player : MonoBehaviour
 {
@@ -14,6 +20,8 @@ public class Player : MonoBehaviour
     public float maxDownwardSpeed = -15f;
     public float groundedResetSpeed = 0f;
 
+     private RewardManager rewardManager;
+
     private void Start()
     {
     }
@@ -22,6 +30,11 @@ public class Player : MonoBehaviour
     {
         character = GetComponent<CharacterController>();
         direction = Vector3.zero;
+        rewardManager = FindObjectOfType<RewardManager>();
+        if (rewardManager == null)
+        {
+            Debug.LogError("RewardManager no encontrado.");
+        }
     }
 
     private void OnEnable()
@@ -51,9 +64,39 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Obstacle")) {
-            soundHandler.PlayDieSound();
-            Invoke("Find",0.2f); 
+        try
+        {
+            GameEntityType entityType = GetEntityTypeFromTag(other.tag);
+            switch (entityType)
+            {
+                case GameEntityType.Obstacle:
+                    soundHandler.PlayDieSound();
+                    Invoke("Find", 0.2f);
+                    break;
+                case GameEntityType.Collectable:
+                
+                    Debug.LogError("1");
+                    rewardManager.Collect();
+                    Destroy(other.gameObject);
+                    break;
+            }
+        }
+        catch (System.ArgumentException e)
+        {
+            Debug.LogWarning(e.Message);
+            // Aquí puedes manejar el caso en el que el tag no se reconoce, si es necesario
+        }
+    }
+    private GameEntityType GetEntityTypeFromTag(string tag)
+    {
+        switch (tag)
+        {
+            case "Obstacle":
+                return GameEntityType.Obstacle;
+            case "Collectable":
+                return GameEntityType.Collectable;
+            default:
+                throw new System.ArgumentException("Tag no reconocido: " + tag);
         }
     }
 

@@ -53,10 +53,11 @@ public class GameManager : MonoBehaviour
 
     public void NewGame()
     {
-        Obstacle[] obstacles = FindObjectsOfType<Obstacle>();
+        GameEntity[] gameEntities = FindObjectsOfType<GameEntity>();
 
-        foreach (var obstacle in obstacles) {
-            Destroy(obstacle.gameObject);
+        foreach (var entity in gameEntities)
+        {
+            Destroy(entity.gameObject);
         }
 
         score = 0f;
