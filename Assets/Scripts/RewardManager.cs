@@ -21,8 +21,6 @@ public class RewardManager : MonoBehaviour
 
     public void Collect()
     {
-        
-            Debug.LogError("2");
         if (collected < totalCollectables)
         {
             collected++;

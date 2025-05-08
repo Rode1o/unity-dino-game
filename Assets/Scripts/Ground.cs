@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[RequireComponent(typeof(MeshRenderer))]
+// [RequireComponent(typeof(MeshRenderer))]
 public class Ground : ScrollingObject
 {
     private MeshRenderer GroundMeshRenderer;

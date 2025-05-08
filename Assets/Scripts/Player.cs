@@ -20,7 +20,8 @@ public class Player : MonoBehaviour
     public float maxDownwardSpeed = -15f;
     public float groundedResetSpeed = 0f;
 
-     private RewardManager rewardManager;
+    private RewardManager rewardManager;
+    private HealthComponent health;
 
     private void Start()
     {
@@ -35,11 +36,18 @@ public class Player : MonoBehaviour
         {
             Debug.LogError("RewardManager no encontrado.");
         }
+        health = GetComponent<HealthComponent>();
+        if (health == null)
+            Debug.LogError("HealthComponent no encontrado.");
     }
 
     private void OnEnable()
     {
         direction = Vector3.zero;
+        if (health != null)
+        {
+            health.OnDeath += OnPlayerDeath;
+        }
     }
 
     private void FixedUpdate()
@@ -70,12 +78,10 @@ public class Player : MonoBehaviour
             switch (entityType)
             {
                 case GameEntityType.Obstacle:
+                    health.TakeDamage(25f);
                     soundHandler.PlayDieSound();
-                    Invoke("Find", 0.2f);
                     break;
                 case GameEntityType.Collectable:
-                
-                    Debug.LogError("1");
                     rewardManager.Collect();
                     Destroy(other.gameObject);
                     break;
@@ -98,6 +104,11 @@ public class Player : MonoBehaviour
             default:
                 throw new System.ArgumentException("Tag no reconocido: " + tag);
         }
+    }
+
+     private void OnPlayerDeath()
+    {
+        Invoke("Find", 0.2f);
     }
 
     private void Find()
