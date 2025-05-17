@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     private float score;
     
     public AudioClip audioClip;
+    public AudioClip collectionCompleteSound; // Sonido para cuando completas la colección
     
     private int lastScoreMultiple = -1;
     private int currentScoreMultiple;
@@ -69,6 +70,9 @@ public class GameManager : MonoBehaviour
         gameOverText.gameObject.SetActive(false);
         retryButton.gameObject.SetActive(false);
 
+        // Reiniciar la colección
+        UIManager.Instance.ResetCollection();
+
         UpdateHiscore();
     }
 
@@ -110,5 +114,36 @@ public class GameManager : MonoBehaviour
 
         hiscoreText.text = Mathf.FloorToInt(hiscore).ToString("D5");
     }
-    
+
+    public void OnCollectionComplete()
+    {
+        // Reproducir sonido de completado si existe
+        if (collectionCompleteSound != null)
+        {
+            GetComponent<AudioSource>().PlayOneShot(collectionCompleteSound);
+        }
+
+        // Aquí puedes agregar más recompensas o efectos
+        // Por ejemplo:
+        // - Dar puntos extra
+        score += 1000;
+        
+        // - Mostrar un mensaje de felicitación
+        if (gameOverText != null)
+        {
+            gameOverText.text = "¡Colección Completa!\nPuntos Extra: 1000";
+            gameOverText.gameObject.SetActive(true);
+        }
+
+        // - Ralentizar el tiempo
+        Time.timeScale = 0.5f;
+        Invoke(nameof(RestoreTimeScale), 2f);
+
+        // Puedes agregar más efectos o recompensas aquí
+    }
+
+    private void RestoreTimeScale()
+    {
+        Time.timeScale = 1f;
+    }
 }
